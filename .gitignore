@@ -4,4 +4,6 @@ npm-debug.log
 !mock-cert.pem
 .env
 package-lock.json
+yarn.lock
 coverage
+.idea
