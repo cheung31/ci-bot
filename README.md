@@ -30,7 +30,19 @@ npm start
     * This should lay the groundwork for relaying CI logs/status to a GitHub PR.
     * Therefore, this should save me some development time/effort. 
   * Cons
-    * I don't learn the basics of GitHub API / client application setup. But I can read the source code of Probot to learn more.
+    * I don't learn the basics of GitHub API / client application setup. But I can read the source code of Probot to learn more. At its core, it appears to be [a web server](https://github.com/octokit/webhooks) that can receive [webhooks](https://github.com/octokit/webhooks).
+ * Identify relevant GitHub Webhooks to consider handling
+   * [`status`](https://developer.github.com/v3/activity/events/types/#statusevent) - If a public repo is properly integrated with CircleCI, upon a failed build, this webhook should be triggered. We'll want to handle specifically the `failure` status state.
+
+### Order of Operations
+* Ensure a repo is integrated with CircleCI and installed this GitHub App.
+* Create a PR for this repo.
+* This should trigger a CircleCI build for the latest commit in the PR.
+* When CircleCI build fails:
+  * Triggers GitHub `status` webhook with `failure` state.
+    * Probot handles this, and fetches CircleCI API for associated build's information to display to user
+    * Format a user friendly / actionable comment to describe why build failed.
+    * Post a comment to the PR with this formatted content.
 
 ## Contributing
 
