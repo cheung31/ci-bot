@@ -11,6 +11,16 @@ module.exports = app => {
     return context.github.issues.createComment(issueComment)
   })
 
+  app.on('status', async context => {
+    if (context.payload.state !== 'failure') {
+      return;
+    }
+
+    const body = 'Your build failed';
+    const issue = { body };
+    return context.github.pulls.createComment(context.repo(issue));
+  });
+
   // For more information on building apps:
   // https://probot.github.io/docs/
 

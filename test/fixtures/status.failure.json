@@ -1,0 +1,11 @@
+{
+  "state": "failure",
+  "sha": "b47986b5fb02cdf4a885b39ab5e48dc725f5024b",
+  "installation": { "id": 123 },
+  "repository": {
+    "name": "ci-bot",
+    "owner": {
+      "login": "cheung31"
+    }
+  }
+}
