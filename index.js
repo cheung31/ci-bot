@@ -6,19 +6,23 @@ module.exports = app => {
   // Your code here
   app.log('Yay, the app was loaded!')
 
-  app.on('issues.opened', async context => {
-    const issueComment = context.issue({ body: 'Thanks for opening this issue!' })
-    return context.github.issues.createComment(issueComment)
-  })
-
   app.on('status', async context => {
     if (context.payload.state !== 'failure') {
       return;
     }
 
-    const body = 'Your build failed';
-    const issue = { body };
-    return context.github.pulls.createComment(context.repo(issue));
+    // 1) Inspect payload for anything that references CircleCI build
+    const {
+      sha,
+      target_url
+    } = context.payload;
+
+    // 2) Fetch build info from CircleCI (given build number?)
+
+    // 3) Compose comment from build info
+
+    const comment = context.repo({ number: 1, body: 'Your build failed' })
+    return context.github.issues.createComment(comment)
   });
 
   // For more information on building apps:

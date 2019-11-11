@@ -10,7 +10,8 @@ const path = require('path')
 nock.disableNetConnect()
 
 describe('ci-bot', () => {
-  let probot
+  let probot;
+  let github;
   let mockCert;
 
   beforeAll((done) => {
@@ -22,7 +23,22 @@ describe('ci-bot', () => {
   })
 
   beforeEach(() => {
-    probot = new Probot({ id: 123, cert: mockCert })
+    github = {
+      issues: {
+        createComment: jest.fn(),
+        // getComments: jest.fn(() => Promise.resolve({data: []})),
+        // editComment: jest.fn()
+      },
+      repos: {
+        // getContent: jest.fn(() => Promise.resolve({data: { content: '' }}))
+      }
+    };
+
+    probot = new Probot({
+      id: 123,
+      cert: mockCert,
+      Octokit: github
+    })
     // Load our app into probot
     probot.load(myProbotApp)
   })
@@ -32,7 +48,7 @@ describe('ci-bot', () => {
 
     // Test that a comment is posted in PR
     nock('https://api.github.com')
-      .post('/repos/cheung31/ci-bot/issues/1/comments', (body) => {
+      .post('/repos/Codertocat/Hello-World/issues/1/comments', (body) => {
         expect(body).toMatchObject(statusFailureBody);
         return true;
       })
@@ -42,26 +58,19 @@ describe('ci-bot', () => {
     await probot.receive({ name: 'status', payload: statusFailurePayload });
   });
 
-  /*
-  test('updates a comment if build status changes', async () => {});
+  // test('updates a comment if build status changes', async () => {});
 
   test('skips non-failure status', async () => {
     const event = {
       event: 'status',
       payload: {
-        state: 'passed',
-        installation: { id: 123 },
-        repository: {
-          name: 'my-public-repo',
-          owner: { login: 'cheung31' }
-        }
+        state: 'passed'
       }
-    }
+    };
 
     await probot.receive(event)
     expect(github.issues.createComment).not.toHaveBeenCalled()
   })
-   */
 });
 
 // For more information about testing with Jest see:
