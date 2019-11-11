@@ -28,9 +28,6 @@ describe('ci-bot', () => {
         createComment: jest.fn(),
         // getComments: jest.fn(() => Promise.resolve({data: []})),
         // editComment: jest.fn()
-      },
-      repos: {
-        // getContent: jest.fn(() => Promise.resolve({data: { content: '' }}))
       }
     };
 
@@ -38,15 +35,16 @@ describe('ci-bot', () => {
       id: 123,
       cert: mockCert
     })
-    probot.auth = mockGitHubApi; // https://github.com/probot/probot/blob/master/src/application.ts#L485-L527
+    // probot.app.auth = jest.fn(() => Promise.resolve(mockGitHubApi)); // https://github.com/probot/probot/blob/master/src/application.ts#L485-L527
     // Load our app into probot
-    probot.load(myProbotApp)
+    let app = probot.load(myProbotApp)
+    app.auth = jest.fn(() => Promise.resolve(mockGitHubApi))
   })
 
   test('creates a comment on status failure event', async () => {
     const statusFailureBody = { body: 'Your build failed' };
 
-    // Test that a comment is posted in PR
+    // Test that mock payload is a status failure
     nock('https://api.github.com')
       .post('/repos/Codertocat/Hello-World/issues/1/comments', (body) => {
         expect(body).toMatchObject(statusFailureBody);
@@ -56,6 +54,9 @@ describe('ci-bot', () => {
 
     // Receive a webhook event
     await probot.receive({ name: 'status', payload: statusFailurePayload });
+
+    // Test that comment is created
+    expect(mockGitHubApi.issues.createComment).toHaveBeenCalledTimes(1)
   });
 
   // test('updates a comment if build status changes', async () => {});

@@ -17,16 +17,19 @@ module.exports = app => {
 
     // 1) Inspect payload for anything that references CircleCI build
     const {
-      sha,
-      target_url
+      context: ctx // ci/circleci: build
     } = context.payload;
 
-    // 2) Fetch build info from CircleCI (given build number?)
-
-    // 3) Compose comment from build info
-
-    const comment = context.repo({ number: 1, body: 'Your build failed' })
-    return context.github.issues.createComment(comment)
+    let CommentAdapter;
+    let adapter;
+    switch (ctx) {
+      case 'ci/circleci: build':
+      default:
+        CommentAdapter = require('./adapters/circleci');
+        break;
+    }
+    adapter = new CommentAdapter(context)
+    return context.github.issues.createComment(await adapter.buildComment())
   });
 
   // For more information on building apps:
