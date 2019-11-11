@@ -3,6 +3,9 @@
  * @param {import('probot').Application} app
  */
 module.exports = app => {
+  app.router.get('/', (req, res) => {
+    console.log(req);
+  })
   // Your code here
   app.log('Yay, the app was loaded!')
 
