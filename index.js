@@ -4,7 +4,7 @@
  */
 module.exports = app => {
   app.router.get('/', (req, res) => {
-    console.log(req);
+    console.log(req)
   })
 
   // Your code here
@@ -12,25 +12,25 @@ module.exports = app => {
 
   app.on('status', async context => {
     if (context.payload.state !== 'failure') {
-      return;
+      return
     }
 
     // 1) Inspect payload for anything that references CircleCI build
     const {
       context: ctx // ci/circleci: build
-    } = context.payload;
+    } = context.payload
 
-    let CommentAdapter;
-    let adapter;
+    let CommentAdapter
+    let adapter
     switch (ctx) {
       case 'ci/circleci: build':
       default:
-        CommentAdapter = require('./adapters/circleci');
-        break;
+        CommentAdapter = require('./adapters/circleci')
+        break
     }
     adapter = new CommentAdapter(context)
     return context.github.issues.createComment(await adapter.buildComment())
-  });
+  })
 
   // For more information on building apps:
   // https://probot.github.io/docs/

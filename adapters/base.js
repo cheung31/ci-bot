@@ -1,6 +1,6 @@
 class BaseCommentAdapter {
   constructor (context) {
-    this.context = context;
+    this.context = context
   }
 
   async fetchBuildInfo () {

@@ -6,15 +6,15 @@ const defaultTemplate = require('../templates/default')
 
 class CircleCIAdapter extends BaseCommentAdapter {
   async fetchBuildInfo () {
-    const { target_url: buildUrl } = this.context.payload;
+    const { target_url: buildUrl } = this.context.payload
     const buildNumber = /https:\/\/circleci\.com\/gh\/(?:.+?\/){2}(\d+)/g.exec(buildUrl)[1]
     const { owner, repo } = this.context.repo()
-    const uri = `https://circleci.com/api/v1.1/project/github/${owner}/${repo}/${buildNumber}`;
+    const uri = `https://circleci.com/api/v1.1/project/github/${owner}/${repo}/${buildNumber}`
 
     let response = await request({
       uri,
       json: true
-    });
+    })
 
     let failingAction = response.steps.pop().actions.pop()
     let logResponse = await request({
@@ -39,7 +39,7 @@ class CircleCIAdapter extends BaseCommentAdapter {
 
   async buildComment (template = defaultTemplate) {
     // 2) Fetch build info from CircleCI (given build number?)
-    let buildInfo = await this.fetchBuildInfo();
+    let buildInfo = await this.fetchBuildInfo()
 
     // 3) Compose comment from build info
     return this.context.repo({
