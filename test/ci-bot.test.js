@@ -11,7 +11,7 @@ nock.disableNetConnect()
 
 describe('ci-bot', () => {
   let probot;
-  let github;
+  let mockGitHubApi;
   let mockCert;
 
   beforeAll((done) => {
@@ -23,7 +23,7 @@ describe('ci-bot', () => {
   })
 
   beforeEach(() => {
-    github = {
+    mockGitHubApi = {
       issues: {
         createComment: jest.fn(),
         // getComments: jest.fn(() => Promise.resolve({data: []})),
@@ -36,9 +36,9 @@ describe('ci-bot', () => {
 
     probot = new Probot({
       id: 123,
-      cert: mockCert,
-      Octokit: github
+      cert: mockCert
     })
+    probot.auth = mockGitHubApi; // https://github.com/probot/probot/blob/master/src/application.ts#L485-L527
     // Load our app into probot
     probot.load(myProbotApp)
   })
@@ -69,7 +69,7 @@ describe('ci-bot', () => {
     };
 
     await probot.receive(event)
-    expect(github.issues.createComment).not.toHaveBeenCalled()
+    expect(mockGitHubApi.issues.createComment).not.toHaveBeenCalled()
   })
 });
 
