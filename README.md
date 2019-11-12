@@ -6,7 +6,8 @@
 > A GitHub App built with [Probot](https://github.com/probot/probot) that reports failed CI builds for its associated Pull Request. Enable contributors to idenitfy the cause of broken builds quickly, so they can ship quickly.
 
 *`ci-bot` Installed as a GitHub app (build-buddy)*
-<img width="748" src="https://user-images.githubusercontent.com/40378/68629634-5ae9ca80-0499-11ea-94f8-d8ec32e1328e.png">
+<img width="750" src="https://user-images.githubusercontent.com/40378/68634871-ab6a2380-04ab-11ea-9186-0232e0771a3d.png">
+
 
 ## Setup
 ### Run bot locally
