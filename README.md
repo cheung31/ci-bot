@@ -94,7 +94,7 @@ Some notes of how I approached building this, from design decisions to friction 
   * Perhaps scaffold the project with unit tests that mock out the `app.auth` method returning a GitHub client. I had to read the source code of Probit to realize how this method provided a GitHub client object and later assigned to `context`.
 * General thoughts
   * As a Probot developer who is attempting to integrate GitHub webhooks with the Probot framework, friction came from:
-    * Finding documentation about GitHub events, Octokit, and Probot docs/internals.
+    * Finding/jumping between documentation about GitHub events, Octokit, and Probot docs/internals.
     * Need to find a way to streamline this if possible.
   * Otherwise the scaffolding tool was a great help. As well as the re-deliver events functionality for testing. 
 
