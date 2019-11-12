@@ -73,6 +73,10 @@ describe('ci-bot', () => {
     await probot.receive(event)
     expect(mockGitHubApi.issues.createComment).not.toHaveBeenCalled()
   })
+
+  test('intentional failing test', () => {
+    expect(true).toBe(false)
+  })
 })
 
 // For more information about testing with Jest see:
