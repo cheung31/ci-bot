@@ -57,9 +57,21 @@ Some notes of how I approached building this, from design decisions to friction 
     * Post a comment to the PR with this formatted content.
     
 ### Struggles
-* Learning about GitHub Apps Permissions & Events.
-  * Wasn't receiving `status` events until I enabled proper permissions to this app.
-  * Then forgot to accept the updated permissions to this app integration on my test repo.
+* Building a mental model of end-to-end event --> webhook --> (smee.io proxy)? --> probot flow
+  * Required a lot of reading where in those documentations, there's an assumption folks are familiar with GitHub events/webhooks.
+  * Perhaps some high-level visual diagram would help developers
+* Configuring a GitHub App's Permissions & Events.
+  * Was extremely confused why `status` events weren't received
+  * [After reading a blog](https://medium.com/@ashantha.lahiru/automate-your-github-workflows-with-probot-960448ec8d77), realized I forgot to enable proper permissions to this app during app creation.
+    * Maybe add a section in the [Probot - Configuring a GitHubApp](https://probot.github.io/docs/development/#configuring-a-github-app) docs explaining permissions/events.
+  * Because I changed required permissions to the app *after* installation, I then forgot to accept the updated permissions to this app integration on my test repo.
+* Writing unit tests for the probot can be complicated.
+  * Perhaps scaffold the project with unit tests that mock out the `app.auth` method returning a GitHub client. I had to read the source code of Probit to realize how this method provided a GitHub client object and later assigned to `context`.
+* General thoughts
+  * As a Probot developer who is attempting to integrate GitHub webhooks with the Probot framework, friction came from:
+    * Finding documentation about GitHub events, Octokit, and Probot docs/internals.
+    * Need to find a way to streamline this if possible.
+  * Otherwise the scaffolding tool was a great help. As well as the re-deliver events functionality for testing. 
 
 ## Contributing
 
