@@ -9,7 +9,7 @@
 <img width="748" src="https://user-images.githubusercontent.com/40378/68629634-5ae9ca80-0499-11ea-94f8-d8ec32e1328e.png">
 
 ## Setup
-
+### Run bot locally
 ```sh
 # Install dependencies
 npm install
@@ -17,6 +17,30 @@ npm install
 # Run the bot
 npm start
 ```
+
+### Install a new GitHub app
+* Navigate to [`localhost:3000`](http://localhost:3000)
+* There should be a link to "Register GitHub App".
+
+### Configuring your new GitHub app
+Configure:
+* General App Settings ([`https://github.com/settings/apps/YOUR-APP`](https://github.com/settings/apps/YOUR-APP))
+  * Give your app a name/description
+  * Ensure your `.env` variables match the Webhook URL / Secret. (Should already be set properly)
+* Permissions ([https://github.com/settings/apps/YOUR-APP/permissions](https://github.com/settings/apps/YOUR-APP/permissions))
+  * Ensure following Repository Permissions enabled:
+    * `Commit statuses`: Read & write
+  * Ensure following Events subscribed:
+    * `Status`
+    
+ ### Add your public repo to CircleCI
+ * Follow quick start guide: https://circleci.com/docs/enterprise/quick-start/
+ * This will ensure that `status` events/webhooks are triggered when CircleCI builds fail
+ 
+### Simulate an event
+* Once you can cause a failed CircleCI build, your GitHub app will track all delivered events: [https://github.com/settings/apps/YOUR-APP/advanced](https://github.com/settings/apps/YOUR-APP/advanced)
+* You can `Redeliver` a particular event to simulate it and manually test your application end-to-end 
+
 
 ## Developer Diary
 Some notes of how I approached building this, from design decisions to friction points during the implementation.
