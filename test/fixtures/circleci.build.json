@@ -1,0 +1,272 @@
+{
+  "compare": null,
+  "previous_successful_build": {
+    "build_num": 2,
+    "status": "success",
+    "build_time_millis": 35856
+  },
+  "build_parameters": {
+    "CIRCLE_JOB": "build"
+  },
+  "oss": true,
+  "all_commit_details_truncated": false,
+  "committer_date": "2019-11-11T15:52:58-08:00",
+  "steps": [
+    {
+      "name": "Spin up Environment",
+      "actions": [
+        {
+          "truncated": false,
+          "index": 0,
+          "parallel": true,
+          "failed": null,
+          "infrastructure_fail": null,
+          "name": "Spin up Environment",
+          "bash_command": null,
+          "status": "success",
+          "timedout": null,
+          "continue": null,
+          "end_time": "2019-11-11T23:53:13.963Z",
+          "type": "test",
+          "allocation_id": "5dc9f461a73609076694fb63-0-build/76C79CFA",
+          "output_url": "https://circle-production-action-output.s3.amazonaws.com/1f5bc1dd04ea6ada664f9cd5-5dc7484e5bfb091ae4c9175d-0-0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191112T001622Z&X-Amz-SignedHeaders=host&X-Amz-Expires=431999&X-Amz-Credential=AKIAIJNI6FA5RIAFFQ7Q%2F20191112%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=d1fcdabd7e5a0e77e2b52604365d7826ee0e083940457cc42444779aea4ee4a3",
+          "start_time": "2019-11-11T23:53:09.942Z",
+          "background": false,
+          "exit_code": null,
+          "insignificant": false,
+          "canceled": null,
+          "step": 0,
+          "run_time_millis": 4021,
+          "has_output": true
+        }
+      ]
+    },
+    {
+      "name": "Checkout code",
+      "actions": [
+        {
+          "truncated": false,
+          "index": 0,
+          "parallel": true,
+          "failed": null,
+          "infrastructure_fail": null,
+          "name": "Checkout code",
+          "bash_command": "#!/bin/sh\nset -e\n\n# Workaround old docker images with incorrect $HOME\n# check https://github.com/docker/docker/issues/2968 for details\nif [ \"${HOME}\" = \"/\" ]\nthen\n  export HOME=$(getent passwd $(id -un) | cut -d: -f6)\nfi\n\nmkdir -p ~/.ssh\n\necho 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==\nbitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==\n' >> ~/.ssh/known_hosts\n\n(umask 077; touch ~/.ssh/id_rsa)\nchmod 0600 ~/.ssh/id_rsa\n(cat <<EOF > ~/.ssh/id_rsa\n$CHECKOUT_KEY\nEOF\n)\n\n# use git+ssh instead of https\ngit config --global url.\"ssh://git@github.com\".insteadOf \"https://github.com\" || true\ngit config --global gc.auto 0 || true\n\nif [ -e /home/circleci/repo/.git ]\nthen\n  cd /home/circleci/repo\n  git remote set-url origin \"$CIRCLE_REPOSITORY_URL\" || true\nelse\n  mkdir -p /home/circleci/repo\n  cd /home/circleci/repo\n  git clone \"$CIRCLE_REPOSITORY_URL\" .\nfi\n\nif [ -n \"$CIRCLE_TAG\" ]\nthen\n  git fetch --force origin \"refs/tags/${CIRCLE_TAG}\"\nelse\n  git fetch --force origin \"tests:remotes/origin/tests\"\nfi\n\n\nif [ -n \"$CIRCLE_TAG\" ]\nthen\n  git reset --hard \"$CIRCLE_SHA1\"\n  git checkout -q \"$CIRCLE_TAG\"\nelif [ -n \"$CIRCLE_BRANCH\" ]\nthen\n  git reset --hard \"$CIRCLE_SHA1\"\n  git checkout -q -B \"$CIRCLE_BRANCH\"\nfi\n\ngit reset --hard \"$CIRCLE_SHA1\"",
+          "status": "success",
+          "timedout": null,
+          "continue": null,
+          "end_time": "2019-11-11T23:53:14.675Z",
+          "type": "test",
+          "allocation_id": "5dc9f461a73609076694fb63-0-build/76C79CFA",
+          "output_url": "https://circle-production-action-output.s3.amazonaws.com/8a8162dfb75778a9a64f9cd5-5dc7484e5bfb091ae4c9175d-101-0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191112T001622Z&X-Amz-SignedHeaders=host&X-Amz-Expires=431999&X-Amz-Credential=AKIAIJNI6FA5RIAFFQ7Q%2F20191112%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=9082c6f416409d32894a4f33344bab85f4555ad00d06c192abdfc4d149b81c9d",
+          "start_time": "2019-11-11T23:53:14.271Z",
+          "background": false,
+          "exit_code": null,
+          "insignificant": false,
+          "canceled": null,
+          "step": 101,
+          "run_time_millis": 404,
+          "has_output": true
+        }
+      ]
+    },
+    {
+      "name": "Restoring Cache",
+      "actions": [
+        {
+          "truncated": false,
+          "index": 0,
+          "parallel": true,
+          "failed": null,
+          "infrastructure_fail": null,
+          "name": "Restoring Cache",
+          "bash_command": null,
+          "status": "success",
+          "timedout": null,
+          "continue": null,
+          "end_time": "2019-11-11T23:53:16.971Z",
+          "type": "test",
+          "allocation_id": "5dc9f461a73609076694fb63-0-build/76C79CFA",
+          "output_url": "https://circle-production-action-output.s3.amazonaws.com/ba8162dfb75778a9a64f9cd5-5dc7484e5bfb091ae4c9175d-102-0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191112T001622Z&X-Amz-SignedHeaders=host&X-Amz-Expires=431999&X-Amz-Credential=AKIAIJNI6FA5RIAFFQ7Q%2F20191112%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=fa9d06dcf9d9cfc27f03d08ba573c3cd7147e83d743586153f77a82cb9125fe2",
+          "start_time": "2019-11-11T23:53:14.722Z",
+          "background": false,
+          "exit_code": null,
+          "insignificant": false,
+          "canceled": null,
+          "step": 102,
+          "run_time_millis": 2249,
+          "has_output": true
+        }
+      ]
+    },
+    {
+      "name": "yarn install",
+      "actions": [
+        {
+          "truncated": false,
+          "index": 0,
+          "parallel": true,
+          "failed": null,
+          "infrastructure_fail": null,
+          "name": "yarn install",
+          "bash_command": "#!/bin/bash -eo pipefail\nyarn install",
+          "status": "success",
+          "timedout": null,
+          "continue": null,
+          "end_time": "2019-11-11T23:53:32.670Z",
+          "type": "test",
+          "allocation_id": "5dc9f461a73609076694fb63-0-build/76C79CFA",
+          "output_url": "https://circle-production-action-output.s3.amazonaws.com/336bc1dd04ea6adad64f9cd5-5dc7484e5bfb091ae4c9175d-103-0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191112T001622Z&X-Amz-SignedHeaders=host&X-Amz-Expires=431999&X-Amz-Credential=AKIAIJNI6FA5RIAFFQ7Q%2F20191112%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=e2c1b14e338fb80bc0bd9d6120556cbe3b4928fe11e575ea6504984b4f7fce24",
+          "start_time": "2019-11-11T23:53:16.976Z",
+          "background": false,
+          "exit_code": 0,
+          "insignificant": false,
+          "canceled": null,
+          "step": 103,
+          "run_time_millis": 15694,
+          "has_output": true
+        }
+      ]
+    },
+    {
+      "name": "Saving Cache",
+      "actions": [
+        {
+          "truncated": false,
+          "index": 0,
+          "parallel": true,
+          "failed": null,
+          "infrastructure_fail": null,
+          "name": "Saving Cache",
+          "bash_command": null,
+          "status": "success",
+          "timedout": null,
+          "continue": null,
+          "end_time": "2019-11-11T23:53:32.737Z",
+          "type": "test",
+          "allocation_id": "5dc9f461a73609076694fb63-0-build/76C79CFA",
+          "output_url": "https://circle-production-action-output.s3.amazonaws.com/b39162dfb75778a9c74f9cd5-5dc7484e5bfb091ae4c9175d-104-0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191112T001622Z&X-Amz-SignedHeaders=host&X-Amz-Expires=431999&X-Amz-Credential=AKIAIJNI6FA5RIAFFQ7Q%2F20191112%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6e09ebe1642e7f2ef035603b6cb917a0888409cb824d65dacfbf299097497759",
+          "start_time": "2019-11-11T23:53:32.678Z",
+          "background": false,
+          "exit_code": null,
+          "insignificant": false,
+          "canceled": null,
+          "step": 104,
+          "run_time_millis": 59,
+          "has_output": true
+        }
+      ]
+    }
+  ],
+  "body": "",
+  "usage_queued_at": "2019-11-11T23:53:05.586Z",
+  "context_ids": [],
+  "fail_reason": null,
+  "retry_of": null,
+  "reponame": "ci-bot",
+  "ssh_users": [],
+  "build_url": "https://circleci.com/gh/cheung31/ci-bot/10",
+  "parallel": 1,
+  "failed": true,
+  "branch": "tests",
+  "username": "cheung31",
+  "author_date": "2019-11-11T15:52:58-08:00",
+  "why": "github",
+  "user": {
+    "is_user": true,
+    "login": "cheung31",
+    "avatar_url": "https://avatars2.githubusercontent.com/u/40378?v=4",
+    "name": "Ryan Cheung",
+    "vcs_type": "github",
+    "id": 40378
+  },
+  "vcs_revision": "fa1ca2f10be3a919e8d903cb14abfa94985e51f2",
+  "workflows": {
+    "job_name": "build",
+    "job_id": "2a91e516-9bf8-49aa-a650-c401781d15f8",
+    "workflow_id": "f4edd6f0-e6c4-4cff-96f9-82ba8a5bb3fa",
+    "workspace_id": "f4edd6f0-e6c4-4cff-96f9-82ba8a5bb3fa",
+    "upstream_job_ids": [],
+    "upstream_concurrency_map": {},
+    "workflow_name": "workflow"
+  },
+  "owners": [
+    "cheung31"
+  ],
+  "vcs_tag": null,
+  "pull_requests": [
+    {
+      "head_sha": "2c76e53bdc7193fcc5be6915ab6dcff4fab79413",
+      "url": "https://github.com/cheung31/ci-bot/pull/2"
+    }
+  ],
+  "build_num": 10,
+  "infrastructure_fail": false,
+  "committer_email": "cheung31@gmail.com",
+  "has_artifacts": true,
+  "previous": {
+    "build_num": 9,
+    "status": "failed",
+    "build_time_millis": 26697
+  },
+  "status": "failed",
+  "committer_name": "Ryan Cheung",
+  "retries": null,
+  "subject": "Remove scaffold code",
+  "vcs_type": "github",
+  "timedout": false,
+  "dont_build": null,
+  "lifecycle": "finished",
+  "no_dependency_cache": false,
+  "stop_time": "2019-11-11T23:53:35.069Z",
+  "ssh_disabled": true,
+  "build_time_millis": 25201,
+  "picard": {
+    "build_agent": {
+      "image": "circleci/picard@sha256:5560026b5ddb7508e9b3d172a94404c2191884d4881f71196eb8c017fddb948e",
+      "properties": {
+        "build_agent": "1.0.18505-725763e3",
+        "executor": "docker"
+      }
+    },
+    "resource_class": {
+      "cpu": 2,
+      "ram": 4096,
+      "class": "medium"
+    },
+    "executor": "docker"
+  },
+  "circle_yml": {
+    "string": "version: 2\njobs:\n  build:\n    docker:\n    - image: circleci/node:10.16.3\n    working_directory: ~/repo\n    steps:\n    - checkout\n    - restore_cache:\n        keys:\n        - v1-dependencies-{{ checksum \"package.json\" }}\n        - v1-dependencies-\n    - run: yarn install\n    - save_cache:\n        paths:\n        - node_modules\n        key: v1-dependencies-{{ checksum \"package.json\" }}\n    - run: yarn test\n    environment:\n    - CIRCLE_COMPARE_URL: https://github.com/cheung31/ci-bot/compare/0ee1a06eba93...fa1ca2f10be3\nworkflows:\n  version: 2\n  workflow:\n    jobs:\n    - build\n"
+  },
+  "messages": [],
+  "is_first_green_build": false,
+  "job_name": null,
+  "start_time": "2019-11-11T23:53:09.868Z",
+  "canceler": null,
+  "all_commit_details": [
+    {
+      "committer_date": "2019-11-11T15:52:58-08:00",
+      "body": "",
+      "branch": "tests",
+      "author_date": "2019-11-11T15:52:58-08:00",
+      "committer_email": "cheung31@gmail.com",
+      "commit": "fa1ca2f10be3a919e8d903cb14abfa94985e51f2",
+      "committer_login": "cheung31",
+      "committer_name": "Ryan Cheung",
+      "subject": "Remove scaffold code",
+      "commit_url": "https://github.com/cheung31/ci-bot/commit/fa1ca2f10be3a919e8d903cb14abfa94985e51f2",
+      "author_login": "cheung31",
+      "author_name": "Ryan Cheung",
+      "author_email": "cheung31@gmail.com"
+    }
+  ],
+  "platform": "2.0",
+  "outcome": "failed",
+  "vcs_url": "https://github.com/cheung31/ci-bot",
+  "author_name": "Ryan Cheung",
+  "node": null,
+  "queued_at": "2019-11-11T23:53:05.639Z",
+  "canceled": false,
+  "author_email": "cheung31@gmail.com"
+}

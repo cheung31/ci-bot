@@ -19,11 +19,23 @@
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": ["npm run lint", "git add"]
+  },
   "dependencies": {
-    "probot": "^9.0.1"
+    "probot": "^9.0.1",
+    "request-promise-native": "^1.0.8",
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
+    "husky": "^3.0.9",
     "jest": "^24.0.0",
+    "lint-staged": "^9.4.2",
     "nock": "^11.6.0",
     "nodemon": "^1.17.2",
     "smee-client": "^1.0.2",
