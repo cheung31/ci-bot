@@ -16,6 +16,7 @@ describe('ci-bot', () => {
   let mockGitHubApi
 
   beforeEach(() => {
+    // Mock GitHub client used internally in probot
     mockGitHubApi = {
       issues: {
         createComment: jest.fn()
@@ -25,10 +26,9 @@ describe('ci-bot', () => {
     probot = new Probot({
       id: 123
     })
-    // probot.app.auth = jest.fn(() => Promise.resolve(mockGitHubApi)); // https://github.com/probot/probot/blob/master/src/application.ts#L485-L527
     // Load our app into probot
     let app = probot.load(myProbotApp)
-    app.auth = jest.fn(() => Promise.resolve(mockGitHubApi))
+    app.auth = jest.fn(() => Promise.resolve(mockGitHubApi)) // https://github.com/probot/probot/blob/master/src/application.ts#L485-L527
   })
 
   test('creates a comment on status failure event', async () => {
@@ -59,8 +59,6 @@ describe('ci-bot', () => {
     // Test that comment is created
     expect(mockGitHubApi.issues.createComment).toHaveBeenCalledTimes(1)
   })
-
-  // test('updates a comment if build status changes', async () => {});
 
   test('skips non-failure status', async () => {
     const event = {
