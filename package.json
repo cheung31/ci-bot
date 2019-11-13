@@ -25,7 +25,10 @@
     }
   },
   "lint-staged": {
-    "*.js": ["npm run lint", "git add"]
+    "*.js": [
+      "npm run lint",
+      "git add"
+    ]
   },
   "dependencies": {
     "probot": "^9.0.1",
